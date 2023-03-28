@@ -7,7 +7,7 @@ from wave_library import *
 from visual_wave import plot_line
 
 
-def genseq(init_t =100e-3, reset_t = 100e-3, rate = 1e7):
+def genseq(init_t =50e-6, reset_t = 50e-6, rate = 1e8):
 	# First let's give names to our channels
 
 	chs = {
@@ -20,7 +20,7 @@ def genseq(init_t =100e-3, reset_t = 100e-3, rate = 1e7):
 	    'ctr2': Channel.ch2_m2,
 	    
 	    'pico_trig': Channel.ch3_a,
-	    'aom'      : Channel.ch3_m1,
+	    'res_aom'      : Channel.ch3_m1,
 	    'res'   : Channel.ch3_m2,
 	    
 	    'res_analog': Channel.ch4_a,
@@ -35,26 +35,29 @@ def genseq(init_t =100e-3, reset_t = 100e-3, rate = 1e7):
 
 	seq_len = reset_t+init_t
 	# make first line an AOM on/READ on line
-	line1 = Rect(t=seq_len,ch = chs['980_aom'])
+	# line1 = Rect(t=seq_len,ch = chs['980_aom'])
+	line1 = Rect(t=seq_len,ch = chs['res_aom'])
 	line1 &= Zero(t=seq_len,ch = chs['swabian'])
 	writer.add_line(line1,'aom on')
 
 	# make first line an AOM on/READ on line
-	line1 = Rect(t=seq_len,ch = chs['980_aom'])
+	# line1 = Rect(t=seq_len,ch = chs['980_aom'])
+	line1 = Rect(t=seq_len,ch = chs['res_aom'])
 	line1 &= Zero(t=seq_len,ch = chs['swabian'])
 	writer.add_line(line1,'aom off')
 
 
 
 
-	line = Rect(t=init_t,ch=chs['980_aom'])+Zero(t=reset_t,ch=chs['980_aom'])
+	# line = Rect(t=init_t,ch=chs['980_aom'])+Zero(t=reset_t,ch=chs['980_aom'])
+	line = Rect(t=init_t,ch=chs['res_aom'])+Zero(t=reset_t,ch=chs['res_aom'])
 	line &= Rect(t=init_t,ch=chs['swabian'])+Zero(t=reset_t,ch=chs['swabian'])
 	i=1
 	writer.add_line(line,'sp_'+str(i))
 
 
 
-	writer.generate_and_upload('192.168.0.251', 'temp/single_pulse_980.awg',rate,limits=limits_awg)
+	writer.generate_and_upload('192.168.0.251', 'temp/single_pulse_res_20usON_20usOFF.awg',rate,limits=limits_awg)
 	return writer
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 # optical T1 sequence
 import os
 import sys
-sys.path.insert(0, os.path.abspath('D:/users/moleq/code/Easy-Wave/'))
+# sys.path.insert(0, os.path.abspath('D:/users/moleq/code/Easy-Wave/'))
 from easy_wave import AWG_Writer, Channel, REAL_CHANNELS
 from wave_library import *
 from visual_wave import plot_line
@@ -28,7 +28,7 @@ def genseq(buffer_t = 0, init_t =500e-6, read_t = 10e-6, reset_t = 100e-3, tau =
 	    '980'     : Channel.ch4_m2,
 	}
 
-	limits_awg = {Channel.ch3_m1:(0.0,1.0)}
+	limits_awg = {Channel.ch3_m1:(0.0,2.7)}
 
 	writer = AWG_Writer()
 
